@@ -38,6 +38,12 @@ class DangerousInvite:
                 await self.bot.send_message(ctx.message.author, "3글자의 금지단어를 말해주세용")
                 await self.bot.add_reaction(ctx.message, "👍")
                 self.bot.listenPrivateMsg(newGame)
+                        try:
+                            await self.bot.kick(message.author)
+                            await self.bot.say("{}의 인성이 터졌어용".format(self.games[ctx.message.server].initUser.mention))
+                        except:
+                            await self.bot.send_message(message.channel, DangerousInvite.instance.errorMsg)
+
 
 class DangerousInviteGame(Observable):
     def __init__(self, bot, server, user, channel):
@@ -103,10 +109,7 @@ class DangerousInviteGame(Observable):
         with open("temp/dinvite_temp.png", "rb") as f:
             await self.bot.send_file(message.channel, f)
 
-        try:
-            await self.bot.kick(message.author)
-        except:
-            await self.bot.send_message(message.channel, DangerousInvite.instance.errorMsg)
+
         self.endGame()
 
     def endGame(self):
